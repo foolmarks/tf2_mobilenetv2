@@ -412,5 +412,3 @@ The procedure is identical to the one outlined above for the VCK190, just substi
 1. [MobileNetV2: Inverted Residuals and Linear Bottlenecks](https://arxiv.org/pdf/1801.04381v4.pdf), Sandler et al.
 
 </hr>
-<p class="sphinxhide" align="center"><sup>Copyright&copy; 2020-2021 Xilinx</sup></p>
-
