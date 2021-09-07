@@ -1,14 +1,10 @@
 <!--
 Author: Mark Harvey, Xilinx Inc
 -->
-<table class="sphinxhide">
-  <tr>
- <td align="center"><h1>TensorFlow2 implementation of MobileNetV2</h1>
- </td>
- </tr>
-</table>
 
-A TensorFlow2 version of MobileNetv2 with complete source code. The MobileNetv2 model is trained from scratch using the Kaggle dogs-vs-cats dataset.
+# TensorFlow2 implementation of MobileNetV2</h1>
+
+A TensorFlow2 version of MobileNetv2 with complete source code and instructions for running on the Xilinx Versal DPU. The MobileNetv2 model is trained from scratch using the Kaggle dogs-vs-cats dataset.
 
 ### Current status
 
