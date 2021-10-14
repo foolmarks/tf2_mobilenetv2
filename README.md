@@ -4,12 +4,11 @@ Author: Mark Harvey, Xilinx Inc
 
 # TensorFlow2 implementation of MobileNetV2</h1>
 
-A TensorFlow2 version of MobileNetv2 with complete source code and instructions for running on the Xilinx Versal DPU. The MobileNetv2 model is trained from scratch using the Kaggle dogs-vs-cats dataset.
+A TensorFlow2 version of MobileNetv2 with complete source code. The MobileNetv2 model is trained from scratch using the Kaggle dogs-vs-cats dataset.
 
 ### Current status
 
-+ Tested on VCK190 ES1
-+ Tools used: TensorFlow2.3 & Vitis AI 1.4
++ Tools used: TensorFlow2.6.0
 + Dataset: [Kaggle dogs-vs-cats](https://www.kaggle.com/c/dogs-vs-cats/data)
 + Network: MobileNetv2
 
