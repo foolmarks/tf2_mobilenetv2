@@ -25,7 +25,6 @@ import argparse
 import zipfile
 import random
 import shutil
-from tqdm import tqdm
 
 # Silence TensorFlow messages
 os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
@@ -155,6 +154,8 @@ def make_tfrec(build_dir,img_shard):
   random.shuffle(testImages)
   random.shuffle(trainImages)
 
+  print(len(trainImages),'training images and',len(testImages),'test images')
+
 
   ''' Test TFRecords '''
   print('Creating test TFRecord files...')
@@ -168,7 +169,7 @@ def make_tfrec(build_dir,img_shard):
   
   # create TFRecord files (shards)
   start = 0
-  for i in tqdm(range(num_shards)):    
+  for i in range(num_shards):    
     tfrec_filename = 'test_'+str(i)+'.tfrecord'
     write_path = os.path.join(tfrec_dir, tfrec_filename)
     if (i == num_shards-1):
@@ -190,7 +191,7 @@ def make_tfrec(build_dir,img_shard):
   
   # create TFRecord files (shards)
   start = 0
-  for i in tqdm(range(num_shards)):    
+  for i in range(num_shards):    
     tfrec_filename = 'train_'+str(i)+'.tfrecord'
     write_path = os.path.join(tfrec_dir, tfrec_filename)
     if (i == num_shards-1):
@@ -217,7 +218,7 @@ def run_main():
   # construct the argument parser and parse the arguments
   ap = argparse.ArgumentParser()
   ap.add_argument('-bd', '--build_dir', type=str, default='build', help='Build folder path. Default is build.')
-  ap.add_argument('-s',  '--img_shard', type=int, default=2000,  help='Number of images per shard. Default is 1000') 
+  ap.add_argument('-s',  '--img_shard', type=int, default=2000,  help='Number of images per shard. Default is 2000') 
   args = ap.parse_args()
 
   print('\n'+DIVIDER)

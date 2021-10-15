@@ -1,0 +1,7 @@
+.vscode
+.empty
+.keep
+__pycache__/
+build
+*.zip
+

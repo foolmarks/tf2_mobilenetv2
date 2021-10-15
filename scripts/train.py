@@ -7,7 +7,6 @@ Author: Mark Harvey
 '''
 
 import os
-import shutil
 import sys
 import argparse
 
@@ -76,7 +75,7 @@ def train(build_dir,input_height,input_width,input_chan,batchsize,learnrate,epoc
     '''
     tb_call = TensorBoard(log_dir=tboard)
 
-    chkpt_call = ModelCheckpoint(filepath=os.path.join(chkpt_dir,'f_model.h5'), 
+    chkpt_call = ModelCheckpoint(filepath=os.path.join(chkpt_dir,'f_model'), 
                                  monitor='val_accuracy',
                                  verbose=1,
                                  save_best_only=True)
@@ -112,7 +111,7 @@ def train(build_dir,input_height,input_width,input_chan,batchsize,learnrate,epoc
     # run training
     train_history=model.fit(train_dataset,
                             epochs=epochs,
-                            steps_per_epoch=17500//batchsize,
+                            steps_per_epoch=20000//batchsize,
                             validation_data=test_dataset,
                             validation_steps=None,
                             callbacks=callbacks_list,
@@ -126,8 +125,8 @@ def train(build_dir,input_height,input_width,input_chan,batchsize,learnrate,epoc
     print(' Load and evaluate best checkpoint..')
     print(DIVIDER)
 
-    eval_model = load_model(os.path.join(chkpt_dir,'f_model.h5'))
-    scores = model.evaluate(test_dataset)
+    eval_model = load_model(os.path.join(chkpt_dir,'f_model'))
+    scores = eval_model.evaluate(test_dataset)
 
     print(' Floating-point model accuracy: {0:.4f}'.format(scores[1]*100),'%')
     print("\nTensorBoard can be opened with the command: tensorboard --logdir={dir} --host localhost --port 6006".format(dir=tboard))

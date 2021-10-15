@@ -13,7 +13,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
 
 from tensorflow.keras import backend as K
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input,Conv2D,Dropout,Add,DepthwiseConv2D,Dense
+from tensorflow.keras.layers import Input,Conv2D,Add,DepthwiseConv2D,Dense
 from tensorflow.keras.layers import GlobalAveragePooling2D,BatchNormalization,Activation,ReLU
 
 

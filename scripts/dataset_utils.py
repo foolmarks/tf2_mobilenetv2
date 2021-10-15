@@ -27,11 +27,11 @@ def parser(data_record):
     sample = tf.io.parse_single_example(data_record, feature_dict)
     label = tf.cast(sample['label'], tf.int32)
 
-    h = tf.cast(sample['height'], tf.int32)
-    w = tf.cast(sample['width'], tf.int32)
-    c = tf.cast(sample['chans'], tf.int32)
+    h = tf.cast(sample['height'], tf.uint32)
+    w = tf.cast(sample['width'], tf.uint32)
+    c = tf.cast(sample['chans'], tf.uint32)
     image = tf.io.decode_image(sample['image'], channels=3)
-    image = tf.reshape(image,[h,w,3])
+    image = tf.reshape(image,[h,w,c])
 
     return image, label
 
@@ -49,16 +49,13 @@ def resize_random_crop(x,y,h,w):
     return x,y
 
 
-def resize_central_crop(x,y,h,w):
+def resize(x,y,h,w):
     '''
-    Image resize & central crop
+    Image resize
     Args:     Image and label
-    Returns:  augmented image and unchanged label
+    Returns:  resized image and unchanged label
     '''
-    rh = int(h *1.2)
-    rw = int(w *1.2)
-    x = tf.image.resize(x, (rh,rw), method='bicubic')
-    x = tf.image.resize_with_crop_or_pad(x, h, w)
+    x = tf.image.resize(x, (h,w), method='bicubic')
     return x,y
 
 
@@ -110,39 +107,10 @@ def input_fn_test(tfrec_dir,batchsize,height,width):
     tfrecord_files = tf.data.Dataset.list_files('{}/test_*.tfrecord'.format(tfrec_dir), shuffle=False)
     dataset = tf.data.TFRecordDataset(tfrecord_files)
     dataset = dataset.map(parser, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    dataset = dataset.map(lambda x,y: resize_central_crop(x,y,h=height,w=width), num_parallel_calls=tf.data.experimental.AUTOTUNE)
+    dataset = dataset.map(lambda x,y: resize(x,y,h=height,w=width), num_parallel_calls=tf.data.experimental.AUTOTUNE)
     dataset = dataset.batch(batchsize, drop_remainder=False)
     dataset = dataset.map(normalize, num_parallel_calls=tf.data.experimental.AUTOTUNE)
     dataset = dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
     return dataset
-
-
-def input_fn_quant(tfrec_dir,batchsize,height,width):
-    '''
-    Dataset creation and augmentation for quantization
-    The TFRecord file(s) must have > 1000 images
-    '''
-    tfrecord_files = tf.data.Dataset.list_files('{}/test_0.tfrecord'.format(tfrec_dir), shuffle=False)
-    dataset = tf.data.TFRecordDataset(tfrecord_files)
-    dataset = dataset.map(parser, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    dataset = dataset.map(lambda x,y: resize_central_crop(x,y,h=height,w=width), num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    dataset = dataset.batch(batchsize, drop_remainder=False)
-    dataset = dataset.map(normalize, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    dataset = dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
-    return dataset
-
-
-
-def input_fn_image(tfrec_dir,batchsize,height,width):
-    '''
-    Image creation from test TFRecords
-    '''
-    tfrecord_files = tf.data.Dataset.list_files('{}/test_*.tfrecord'.format(tfrec_dir), shuffle=False)
-    dataset = tf.data.TFRecordDataset(tfrecord_files)
-    dataset = dataset.map(parser, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    dataset = dataset.map(lambda x,y: resize_central_crop(x,y,h=height,w=width), num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    dataset = dataset.batch(batchsize, drop_remainder=False)
-    return dataset
-
 
 
